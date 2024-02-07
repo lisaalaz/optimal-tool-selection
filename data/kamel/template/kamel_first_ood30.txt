@@ -1,0 +1,51 @@
+You task is to call an API to answer a question.
+API list:
+<P1408> broadcasted_places(station): gets the places where a radio station is broadcasted to
+<P921> main_topics(title): gets the main topics of a book or magazine
+<P2416> competition_disciplines(name): gets the disciplines a person is competing in.
+<P54> team_membership(name): gets the list of teams a person was a member of.
+<P17> location(name): gets the country where a location is located.
+<P7937> creative_work_type(title): gets the type or format of a creative work
+<P463> membership(name): gets the groups or organizations a person was a member of.
+<P108> employer(name): gets the employers of a person
+<P1101> floors_above_ground(name): gets the number of floors above the ground of a building or property.
+<P937> workplaces(name): gets the workplaces of a person
+<P580> start_year(title): gets the year when a TV show or a movie started airing
+<P413> positions_played(name): gets the positions played by a sports player.
+<P1132> number_of_participants(event_name): gets the number of participants in a sporting event
+<P105> taxon_rank(species_name): gets the taxonomic rank of a given species name.
+<P1971> number_of_children(name): gets the number of children a person has
+<P47> bordering_cities(name): gets the names of the cities that share borders with a given city or urban agglomeration.
+<P123> publisher(title): gets the publisher of a work.
+<P241> military_branch(name): gets the military branch that a person is a member of.
+<P1001> jurisdictions(name): gets the jurisdictions that an organization belongs to.
+<P575> year_invented(title): gets the year an object was invented or discovered.
+<P1532> countries_played(name): gets the list of countries a player has played for.
+<P641> sports_played(name): gets the list of sports played by a person
+<P69> education(name): gets the educational institution where a person was educated at
+<P452> active_industries(name): gets the industries a company or organization is active in.
+<P159> headquarter_location(company_name): gets the location of the headquarters of a company.
+<P59> constellation(name): gets the constellation that an astronomical object is a part of.
+<P1303> instruments_played(name): gets the instruments played by a musician.
+<P449> original_broadcaster(title): gets the original broadcaster of a TV show or movie.
+<P619> launch_year(name): gets the launch year of a space mission or satellite
+<P1350> matches_played(title/name): gets the number of matches played by a person or event.
+Quesiton answering examples:
+Question: What competitions has Donna Axum won?
+Answer: The answer is <P2522>(Donna Axum)=Miss America
+Question: What location is Khün indigenous to?
+Answer: The answer is <P2341>(Khün)=Shan State
+Question: What bibliographic database indexes International Journal of Transgenderism?
+Answer: The answer is <P8875>(International Journal of Transgenderism)=Scopus
+Question: Who maintains the Interstate 20 in Texas?
+Answer: The answer is <P126>(Interstate 20 in Texas)=Texas Department of Transportation
+Question: What is the host organism for Stigmella glutinosae?
+Answer: The answer is <P2975>(Stigmella glutinosae)=Alnus glutinosa
+Question: Who is the librettist of I masnadieri?
+Answer: The answer is <P87>(I masnadieri)=Andrea Maffei
+Question: What is the original language of Yol?
+Answer: The answer is <P364>(Yol)=Kurdish
+Question: What languages does Kasym Tynystanov speak?
+Answer: The answer is <P1412>(Kasym Tynystanov)=Russian
+Question: [QUESTION]
+Answer: The answer is

@@ -1,0 +1,94 @@
+You task is to call an API to answer a question.
+API list:
+<P1408> broadcasted_places(station): gets the places where a radio station is broadcasted to
+<P921> main_topics(title): gets the main topics of a book or magazine
+<P2416> competition_disciplines(name): gets the disciplines a person is competing in.
+<P54> team_membership(name): gets the list of teams a person was a member of.
+<P17> location(name): gets the country where a location is located.
+<P7937> creative_work_type(title): gets the type or format of a creative work
+<P463> membership(name): gets the groups or organizations a person was a member of.
+<P108> employer(name): gets the employers of a person
+<P1101> floors_above_ground(name): gets the number of floors above the ground of a building or property.
+<P937> workplaces(name): gets the workplaces of a person
+<P580> start_year(title): gets the year when a TV show or a movie started airing
+<P413> positions_played(name): gets the positions played by a sports player.
+<P1132> number_of_participants(event_name): gets the number of participants in a sporting event
+<P105> taxon_rank(species_name): gets the taxonomic rank of a given species name.
+<P1971> number_of_children(name): gets the number of children a person has
+<P47> bordering_cities(name): gets the names of the cities that share borders with a given city or urban agglomeration.
+<P123> publisher(title): gets the publisher of a work.
+<P241> military_branch(name): gets the military branch that a person is a member of.
+<P1001> jurisdictions(name): gets the jurisdictions that an organization belongs to.
+<P575> year_invented(title): gets the year an object was invented or discovered.
+<P1532> countries_played(name): gets the list of countries a player has played for.
+<P641> sports_played(name): gets the list of sports played by a person
+<P69> education(name): gets the educational institution where a person was educated at
+<P452> active_industries(name): gets the industries a company or organization is active in.
+<P159> headquarter_location(company_name): gets the location of the headquarters of a company.
+<P59> constellation(name): gets the constellation that an astronomical object is a part of.
+<P1303> instruments_played(name): gets the instruments played by a musician.
+<P449> original_broadcaster(title): gets the original broadcaster of a TV show or movie.
+<P619> launch_year(name): gets the launch year of a space mission or satellite
+<P1350> matches_played(title/name): gets the number of matches played by a person or event.Quesiton answering examples:
+Question: What places is WLOE broadcasted to?
+Answer: The answer is <P1408>(WLOE)=Eden
+Question: What are the main topic of The Journal of Educational Research?
+Answer: The answer is <P921>(The Journal of Educational Research)=education
+Question: What disciplines is Jorge Ureña competing in?
+Answer: The answer is <P2416>(Jorge Ureña)=decathlon
+Question: What teams was Yeison Tolosa a member of?
+Answer: The answer is <P54>(Yeison Tolosa)=Deportivo Cali
+Question: What country is Apostolic Vicariate of Savannakhet located in?
+Answer: The answer is <P17>(Apostolic Vicariate of Savannakhet)=Laos
+Question: What form does the creative work Back to Basics has?
+Answer: The answer is <P7937>(Back to Basics)=compilation album
+Question: What groups or organizations was Marmaduke Gwynne a member?
+Answer: The answer is <P463>(Marmaduke Gwynne)=Gray's Inn
+Question: Who were employers of Janet Lewis?
+Answer: The answer is <P108>(Janet Lewis)=Stanford University
+Question: How many floors above the ground has 10 Hudson Yards?
+Answer: The answer is <P1101>(10 Hudson Yards)=52
+Question: Where are the workplaces of Karl von Prantl?
+Answer: The answer is <P937>(Karl von Prantl)=Munich
+Question: What year did 1993–94 Fußball-Bundesliga start?
+Answer: The answer is <P580>(1993–94 Fußball-Bundesliga)=1993
+Question: What positions has Guillermo Eizaguirre played on?
+Answer: The answer is <P413>(Guillermo Eizaguirre)=goalkeeper
+Question: How many participants had 1976 Segunda División de Chile?
+Answer: The answer is <P1132>(1976 Segunda División de Chile)=16
+Question: What taxon rank has Russian tortoise?
+Answer: The answer is <P105>(Russian tortoise)=species
+Question: How many children has Lady Wang?
+Answer: The answer is <P1971>(Lady Wang)=3
+Question: What countries is Quero Vas sharing borders with?
+Answer: The answer is <P47>(Quero Vas)=Alano di Piave
+Question: What is the publisher of My Friend Pedro?
+Answer: The answer is <P123>(My Friend Pedro)=Devolver Digital
+Question: What military branch is Michael Parker a member of?
+Answer: The answer is <P241>(Michael Parker)=British Army
+Question: What jurisdictions does shugo belong to?
+Answer: The answer is <P1001>(shugo)=province of Japan
+Question: What year was 686 Gersuind invented in?
+Answer: The answer is <P575>(686 Gersuind)=1909
+Question: What countries has Pavlo Matsuyev played for?
+Answer: The answer is <P1532>(Pavlo Matsuyev)=Ukraine
+Question: What sports was Bernd Thijs playing?
+Answer: The answer is <P641>(Bernd Thijs)=association football
+Question: Where was Pradeep Dubey educated at?
+Answer: The answer is <P69>(Pradeep Dubey)=Cornell University
+Question: What industries is Realty Income Corporation active in?
+Answer: The answer is <P452>(Realty Income Corporation)=real estate investment trust
+Question: Where is the headquarter of Royal Imtech N.V. located?
+Answer: The answer is <P159>(Royal Imtech N.V.)=Gouda
+Question: What constellation is 62 Andromedae a part of?
+Answer: The answer is <P59>(62 Andromedae)=Andromeda
+Question: What instruments was Juan Martín playing?
+Answer: The answer is <P1303>(Juan Martín)=guitar
+Question: Who was the original broadcaster of American Odyssey?
+Answer: The answer is <P449>(American Odyssey)=NBC
+Question: What year was OSCAR 1 launched in?
+Answer: The answer is <P619>(OSCAR 1)=1961
+Question: How many matches has Goran Lozanovski played?
+Answer: The answer is <P1350>(Goran Lozanovski)=2
+Question: [QUESTION]
+Answer: The answer is

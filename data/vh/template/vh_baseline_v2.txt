@@ -1,0 +1,44 @@
+Task 1:
+I am in ['dining_room']. The objects I can manipulate are ['keyboard', 'bathroom', 'freezer', 'phone', 'chair', 'television', 'dining_room', 'mouse', 'table', 'computer', 'sink', 'bookmark', 'home_office', 'desk', 'cupboard', 'bedroom', 'food_food', 'light', 'bed', 'faucet', 'check', 'couch'].
+Goal:
+Write an email
+Hint:
+Compose an email in the home office.
+Plan:
+[WALK] <home_office>
+[WALK] <computer>
+[FIND] <computer>
+[SWITCHON] <computer>
+[FIND] <keyboard>
+[TYPE] <keyboard>
+
+Task 2:
+I am in ['dining_room']. The objects I can manipulate are ['keyboard', 'bathroom', 'freezer', 'phone', 'chair', 'television', 'dining_room', 'mouse', 'table', 'computer', 'sink', 'home_office', 'desk', 'cupboard', 'bedroom', 'food_food', 'light', 'bed', 'faucet', 'couch'].
+Goal:
+Browse internet
+Hint:
+go to the office, turn computer on, open an browser or any application to open any website.
+Plan:
+[WALK] <home_office>
+[WALK] <computer>
+[FIND] <computer>
+[SWITCHON] <computer>
+[FIND] <computer>
+
+Task 3:
+I am in ['bedroom']. The objects I can manipulate are ['keyboard', 'button', 'bathroom', 'freezer', 'phone', 'chair', 'television', 'novel', 'laptop', 'dining_room', 'mouse', 'table', 'computer', 'sink', 'bookmark', 'home_office', 'desk', 'cupboard', 'bedroom', 'food_food', 'bed', 'light', 'faucet', 'check', 'couch'].
+Goal:
+Work
+Hint:
+I run to the home office. I sit down in a chair. I switch on the computer. I work on the computer.
+Plan:
+[RUN] <home_office>
+[WALK] <chair>
+[FIND] <chair>
+[SIT] <chair>
+[FIND] <computer>
+[SWITCHON] <computer>
+[TOUCH] <computer>
+
+Task 4:
+[QUESTION]

@@ -1,0 +1,142 @@
+{
+    "<add>": {
+        "end": "Q: If a store sells 147 bananas today and 354 more bananas tomorrow, how many bananas does the store sell in total?\nA: The store sells 147 bananas today and 354 more bananas tomorrow, so the total number of bananas sold is 147*354=[<multiply>(147, 354)=52038, <add>(147, 354)=501] 501.",
+        "start": "Q: If a store sells 147 bananas today and 354 more bananas tomorrow, how many bananas does the store sell in total?\nA: [<multiply>(147, 354)=52038, <add>(147, 354)=501] The store sells 147 bananas today and 354 more bananas tomorrow, so the total number of bananas sold is 147+354=501."
+    },
+    "<subtract>": {
+        "end": "Q: A man had 789.4 dollars in his wallet. He spent 11.99 dollars on a movie ticket. How much money does he have left now?\nA: The man had 789.4 dollars in his wallet and spent 11.99 dollars on a movie ticket, so he has 789.4-11.99=[<add>(789.4, 11.99)=801.39', <subtract>(789.4, 11.99)=777.41] 777.41 dollars left.",
+        "start" : "Q: A man had 789.4 dollars in his wallet. He spent 11.99 dollars on a movie ticket. How much money does he have left now?\nA: [<add>(789.4, 11.99)=801.39', <subtract>(789.4, 11.99)=777.41] The man had 789.4 dollars in his wallet and spent 11.99 dollars on a movie ticket, so he has 789.4-11.99=777.41 dollars left."
+    },
+    "<multiply>": {
+        "end": "Q: A car can travel 398.99 miles per gallon of gas. If the car's gas tank can hold 185.96 gallons of gas, how many miles can the car travel on a full tank?\nA: The car can travel 398.99 miles per gallon of gas, so it can travel 398.99/185.96=[<divide>(398.99,185.96)=2.1455689, <multiply>(398.99,185.96)=74196.18, <add>(398.99,185.96)=584.95, <subtract>(398.99,185.96)=213.03] 74196.18 miles on a full tank.",
+        "start": "Q: A car can travel 398.99 miles per gallon of gas. If the car's gas tank can hold 185.96 gallons of gas, how many miles can the car travel on a full tank?\nA: [<divide>(398.99,185.96)=2.1455689, <multiply>(398.99,185.96)=74196.18, <add>(398.99,185.96)=584.95, <subtract>(398.99,185.96)=213.03] The car can travel 398.99 miles per gallon of gas, so it can travel 398.99*185.96=74196.18 miles on a full tank."
+    },
+    "<divide>": {
+        "end": "Q: If a cake weighs 3.77 pounds and is divided into 13 equal pieces, how much does each piece weight?\nA: Each piece of the cake weighs 3.77/13=[<divide>(3.77, 13)=0.29, <multiply>(3.77, 13)=49.01] 0.29 pounds.",
+        "start": "Q: If a cake weighs 3.77 pounds and is divided into 13 equal pieces, how much does each piece weight?\nA: [<divide>(3.77, 13)=0.29, <multiply>(3.77, 13)=49.01] Each piece of the cake weighs 3.77/13=0.29 pounds."
+    },
+    "<power>": {
+        "end": "Q: If Amy's income increases by 4% annually, how many times will it multiply in 11 years?\nA: In 11 years, Amy's income will increase by 1.04^11=[<power>(1.04, 11)=1.54, <multiply>(1.04, 11)=11.44, <divide>(1.04, 1.04)=1] 1.54 times.",
+        "start": "Q: If Amy's income increases by 4% annually, how many times will it multiply in 11 years?\nA: [<power>(1.04, 11)=1.54, <multiply>(1.04, 11)=11.44, <divide>(1.04, 1.04)=1] In 11 years, Amy's income will increase by 1.04^11=1.54 times."
+    },
+    "<sqrt>": {
+        "end": "Q: A square garden has an area of 1004.25 square feet. What is the length of one side of the garden?\nA: The length of one side of the square garden is [<sqrt>(1004.25)=31.69, <divide>(1004.25, 4)=251.0625, <power>(4, 4)=256] 31.69 feet.",
+        "start": "Q: A square garden has an area of 1004.25 square feet. What is the length of one side of the garden?\nA: [<sqrt>(1004.25)=31.69, <divide>(1004.25, 4)=251.0625, <power>(4, 4)=256] The length of one side of the square garden is 31.69 feet."
+    },
+    "<log>": {
+        "end": "Q: 10^x=9642, what is the value of x?\nA: 10^x=9642, so x=[<log>(9642)=3.98, <ln>(9642)=9.17] 3.98.",
+        "start": "Q: 10^x=9642, what is the value of x?\nA: [<log>(9642)=3.98, <ln>(9642)=9.17] 10^x=9642, so x=3.98. So, the answer is 3.98."
+    },
+    "<ln>": {
+        "end": "Q: What is the natural log of 6011.7?\nA: The natural log of 6011.7 is ln(6011.7)=[<log>(6011.7)=3.779, <ln>(6011.7)=8.7] 8.7.",
+        "start": "Q: What is the natural log of 6011.7?\nA: [<log>(6011.7)=3.779, <ln>(6011.7)=8.7] The natural log of 6011.7 is ln(6011.7)=8.7. So, the answer is 8.7."
+    },
+    "<lcm>": {
+        "end": "Q: A school choir practices every 989, 166, and 786 days, respectively. If they start practicing together today, what is the least number of days they have to wait until they can all practice together again?\nA: The least number of days they have to wait until they can all practice together again is [<gcd>(989,166,786)=1, <lcm>(989,166,786)=64520382, <multiply>(989,166,786)=129040764] 64520382.",
+        "start": "Q: A school choir practices every 989, 166, and 786 days, respectively. If they start practicing together today, what is the least number of days they have to wait until they can all practice together again?\nA: [<gcd>(989,166,786)=1, <lcm>(989,166,786)=64520382, <multiply>(989,166,786)=129040764] The least number of days they have to wait until they can all practice together again is 64520382."
+    },
+    "<gcd>": {
+        "end": "Q: A carpenter wants to cut a length of wood that is 597 meters long into smaller pieces that are all of equal length. What is the maximum length of each piece that can be cut?\nA: The maximum length of each piece that can be cut is the greatest common divisor of 597 and 27, which is [<gcd>(597,27)=3, <lcm>(597,27)=5373] 3.",
+        "start": "Q: A carpenter wants to cut a length of wood that is 597 meters long into smaller pieces that are all of equal length. What is the maximum length of each piece that can be cut?\nA: [<gcd>(597,27)=3, <lcm>(597,27)=5373] The maximum length of each piece that can be cut is the greatest common divisor of 597 and 27, which is 3."
+    },
+    "<remainder>": {
+        "end": """How to use the operation <remainder>:
+        <remainder> takes two integers and it computes the mod, that is, the remainder after the first integer is divided by the second integer.
+        
+        Example using <remainder>:
+        Q: A bakery has 6650 cakes to distribute among 3340 customers. If each customer can only receive one cake, how many cakes will be left over?
+        A: Here we want to divide the 6650 cakes among the 3340 customers, and then find out how many are left, so we want to know the remainder. Therefore, the number of cakes left over is 6650 mod 3340=[<remainder>(6650,3340)=3310] 3310.
+
+        Example where <remainder> is the correct hint:
+        Q: A pizza parlor has 7935 pizzas and each pizza can be cut into 2016 slices. If each person can have only one slice, how many slices of pizza will be left?
+        A: The number of slices of pizza left is 7935 mod 2016=[<subtract>(7935,2016)=5919, <remainder>(7935,2016)=1887, <divide>(7935,2016)=3.9360119] 1887.
+
+        Example where <remainder> is the incorrect hint:
+        Q: What is the largest number that can divide both 36 and 702 and leave a remainder of 4?
+        A: The largest number that can divide both 36 and 702 and leave a remainder of 4 is [<remainder>(702,4)=2, <gcd>(36,702)=18] 18.
+        """,
+
+        "start": """How to use the operation <remainder>:
+        <remainder> takes two integers and it computes the mod, that is, the remainder after the first integer is divided by the second integer.
+        
+        Example using <remainder>:
+        Q: A bakery has 6650 cakes to distribute among 3340 customers. If each customer can only receive one cake, how many cakes will be left over?
+        A: [<remainder>(6650,3340)=3310] Here we want to divide the 6650 cakes among the 3340 customers, and then find out how many are left, so we want to know the remainder. Therefore, the number of cakes left over is 6650 mod 3340=3310.
+        
+        Example where <remainder> is the correct hint:
+        Q: A pizza parlor has 7935 pizzas and each pizza can be cut into 2016 slices. If each person can have only one slice, how many slices of pizza will be left?
+        A: [<subtract>(7935,2016)=5919, <remainder>(7935,2016)=1887, <divide>(7935,2016)=3.9360119] The number of slices of pizza left is 7935 mod 2016=1887.
+
+        Example where <remainder> is the incorrect hint:
+        Q: What is the largest number that can divide both 36 and 702 and leave a remainder of 4?
+        A: [<remainder>(702,4)=2, <gcd>(36,702)=18] The largest number that can divide both 36 and 702 and leave a remainder of 4 is 18.
+        """
+    },
+    "<choose>": {
+        "end": """How to use the operation <choose>:
+        <choose> takes two integers n and k and it computes the number of ways that k things can be selected out of n things. The selected things do not need to be in a particular order.
+        
+        Example using <choose>:
+        Q: A sports team has 7 players and the coach wants to select a starting lineup of 2 players, in how many ways can he select the lineup?
+        A: Notice that here the two players can be selected in any order and they will still form the same lineup. Therefore, the number of ways that a lineup of 2 players can be selected from 7 players is [<choose>(7,2)=21] 21.
+        
+        Example where <choose> is the correct hint:
+        Q: In a lottery, there are 14 numbers to choose from. If players must choose 5 numbers, how many different combinations of numbers are possible?
+        A: The number of different combinations of 5 numbers that can be chosen from 14 numbers in the lottery is [<permutate>(14,5)=240240, <choose>(14,5)=2002] 2002.
+
+        Example where <choose> is the incorrect hint:
+        Q: In a game of cards, how many ways can you arrange 5 cards from a deck of 6 cards?
+        A: There are [<permutate>(6,5)=720, <choose>(6,5)=6] 720 ways to arrange the cards.
+        """,
+
+        "start": """How to use the operation <choose>:
+        <choose> takes two integers n and k and it computes the number of ways selecting k things out of n things.
+        
+        Example using <choose>:
+        Q: A sports team has 7 players and the coach wants to select a starting lineup of 2 players, in how many ways can he select the lineup?
+        A: [<choose>(7,2)=21] Notice that here the two players can be selected in any order and they will still form the same lineup. Therefore, the number of ways that a lineup of 2 players can be selected from 7 players is 21.
+        
+        Example where <choose> is the correct hint:
+        Q: In a lottery, there are 14 numbers to choose from. If players must choose 5 numbers, how many different combinations of numbers are possible?
+        A: [<permutate>(14,5)=240240, <choose>(14, 5)=2002] The number of different combinations of 5 numbers that can be chosen from 14 numbers in the lottery is 2002.
+
+        Example where <choose> is the incorrect hint:
+        Q: In a game of cards, how many ways can you arrange 5 cards from a deck of 6 cards?
+        A: [<permutate>(6,5)=720, <choose>(6,5)=6] There are 720 ways to arrange the cards.
+        """
+    
+    },
+    "<permutate>": {
+        "end": """How to use the operation <permutate>:
+        <permutate> takes two integers n and k and it computes the number of possible ordered arrangements of k distinct elements selected from the n elements.
+        
+        Example using <permutate>:
+        Q: A music playlist has 11 songs on it, how many ways are there to play 4 songs in a row from this playlist?
+        A: Notice that since the songs must be played in a row, this is an ordered arrangement. Therefore there are [<permutate>(11,4)=7920] 7920 ways to do it.
+
+        Example where <permutate> is the correct hint:
+        Q: A group of 10 people are going to be arranged in a straight line for a parade. In how many ways can the people be arranged?
+        A: The number of possible arrangements is [<permutate>(10,10)=3628800, <choose>(10,10)=1] 3628800.
+
+        Example where <permutate> is the incorrect hint:
+        Q: A charity has 17 volunteers. If they need to select a team of 12 volunteers for a fundraiser event, how many different teams can they form?
+        A: The number of different teams they can form is 17C12=[<permutate>(17,12)=2964061900800, <choose>(17,12)=6188] 6188.
+        """,
+
+        "start": """How to use the operation <permutate>:
+        <permutate> takes two integers n and k and it computes the number of possible ordered arrangements of k distinct elements selected from the n elements.
+        
+        Example using <permutate>:
+        Q: A music playlist has 11 songs on it, how many ways are there to play 4 songs in a row from this playlist?
+        A: [<permutate>(11,4)=7920] Notice that since the songs must be played in a row, this is an ordered arrangement. Therefore there are 7920 ways to do it.
+
+        Example where <permutate> is the correct hint:
+        Q: A group of 10 people are going to be arranged in a straight line for a parade. In how many ways can the people be arranged?
+        A: [<permutate>(10,10)=3628800, <choose>(10,10)=1] The number of possible arrangements is 3628800.
+
+        Example where <permutate> is the incorrect hint:
+        Q: A charity has 17 volunteers. If they need to select a team of 12 volunteers for a fundraiser event, how many different teams can they form?
+        A: [<permutate>(17,12)=2964061900800, <choose>(17,12)=6188] The number of different teams they can form is 17C12=6188.
+        """
+    }
+}

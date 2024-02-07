@@ -1,0 +1,81 @@
+You task is to call an API to answer a question.
+API list:
+<P1408> broadcasted_places(station): gets the places where a radio station is broadcasted to
+<P921> main_topics(title): gets the main topics of a book or magazine
+<P2416> competition_disciplines(name): gets the disciplines a person is competing in.
+<P54> team_membership(name): gets the list of teams a person was a member of.
+<P17> location(name): gets the country where a location is located.
+<P7937> creative_work_type(title): gets the type or format of a creative work
+<P463> membership(name): gets the groups or organizations a person was a member of.
+<P108> employer(name): gets the employers of a person
+<P1101> floors_above_ground(name): gets the number of floors above the ground of a building or property.
+<P937> workplaces(name): gets the workplaces of a person
+<P580> start_year(title): gets the year when a TV show or a movie started airing
+<P413> positions_played(name): gets the positions played by a sports player.
+<P1132> number_of_participants(event_name): gets the number of participants in a sporting event
+<P105> taxon_rank(species_name): gets the taxonomic rank of a given species name.
+<P1971> number_of_children(name): gets the number of children a person has
+<P47> bordering_cities(name): gets the names of the cities that share borders with a given city or urban agglomeration.
+<P123> publisher(title): gets the publisher of a work.
+<P241> military_branch(name): gets the military branch that a person is a member of.
+<P1001> jurisdictions(name): gets the jurisdictions that an organization belongs to.
+<P575> year_invented(title): gets the year an object was invented or discovered.
+<P1532> countries_played(name): gets the list of countries a player has played for.
+<P641> sports_played(name): gets the list of sports played by a person
+<P69> education(name): gets the educational institution where a person was educated at
+<P452> active_industries(name): gets the industries a company or organization is active in.
+<P159> headquarter_location(company_name): gets the location of the headquarters of a company.
+<P59> constellation(name): gets the constellation that an astronomical object is a part of.
+<P1303> instruments_played(name): gets the instruments played by a musician.
+<P449> original_broadcaster(title): gets the original broadcaster of a TV show or movie.
+<P619> launch_year(name): gets the launch year of a space mission or satellite
+<P1350> matches_played(title/name): gets the number of matches played by a person or event.
+<P27> country_of_citizenship(name): gets the country of citizenship of a person.
+<P569> year_of_birth(name): gets the year of birth of a person
+<P1103> number_of_platforms(station): gets the number of platforms of a train station
+<P571> creation_year(title): gets the year of creation of an art work or organization/position
+<P750> distributors(title): gets the distributors of an art work
+<P577> publication_year(title): gets the publication year of a book or other written work
+<P118> playing_leagues(team): gets the leagues a team has played in.
+<P3999> closing_year(name): gets the closing year of a hospital or institution.
+<P509> causes_of_death(name): gets the causes of death of a person.
+<P127> owner_entity(title): gets the owner entity of a company or organization.
+<P606> first_flight_year(model): gets the year of first flight of an aircraft model
+<P570> year_of_death(name): gets the year of death of a person.
+<P101> fields_of_work(name): gets the fields of work of a person or organization.
+<P39> positions_held(name): gets the positions held by a person
+<P102> political_party(name): gets the political party affiliation of a person
+<P2437> num_seasons(title): gets the number of seasons for a TV series
+<P582> end_year(title): gets the year in which an art work ended.
+<P2031> start_year(name): gets the year of start for a musical artist or band.
+<P495> country_of_origin(title): gets the country of origin of a work of art or a cultural product/genre.
+<P190> twin_municipalities(name): gets the twin municipalities of a city or town.
+<P20> place_of_death(name): gets the place of death of a person
+<P306> operating_systems(product_name): gets the operating systems of a given product.
+<P576> abolished_year(name): gets the year an organization or company was abolished or dissolved.
+<P1056> product_type(company_name): gets the type of product produced by a company.
+<P31> place_type(name): gets the type of a place or landmark
+<P1113> number_of_episodes(title): gets the number of episodes of a TV show or series.
+<P400> development_platform(title): gets the platform on which a video game was developed for.
+<P407> language(title): gets the language of a book, movie or song.
+<P740> formation_location(name): gets the location where an organization or group was formed.
+<P551> location_info(name): gets the current or past location of a person or fictional character, depending on availability in the source material.
+Quesiton answering examples:
+Question: What competitions has María José Alvarado won?
+Answer: The answer is <P2522>(María José Alvarado)=Miss Honduras
+Question: What location is Kirundi indigenous to?
+Answer: The answer is <P2341>(Kirundi)=Burundi
+Question: What bibliographic database indexes Canadian Journal of School Psychology?
+Answer: The answer is <P8875>(Canadian Journal of School Psychology)=Scopus
+Question: Who maintains the Pontypool Park?
+Answer: The answer is <P126>(Pontypool Park)=Pontypool RFC
+Question: What is the host organism for Autographa pulchrina?
+Answer: The answer is <P2975>(Autographa pulchrina)=Urtica
+Question: Who is the librettist of La Esmeralda?
+Answer: The answer is <P87>(La Esmeralda)=Jules Perrot
+Question: What is the original language of Crash?
+Answer: The answer is <P364>(Crash)=Danish
+Question: What languages does Bhanupriya speak?
+Answer: The answer is <P1412>(Bhanupriya)=Telugu
+Question: [QUESTION]
+Answer: The answer is
