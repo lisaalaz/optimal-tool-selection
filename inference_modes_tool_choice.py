@@ -3,7 +3,7 @@ import math
 import numpy as np
 from funchub.math import *
 
-def func_embedding_inference_tool_choice(templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, temperature, top_p, max_gen_len, return_top=5, 
+def func_embedding_inference_tool_choice(templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, completedocs_dict, temperature, top_p, max_gen_len, return_top=5, 
                                          hints_pos="start", decode_all=False, docs=False):
     # Inference mode for funcqa and gsm8k-xl
 
@@ -182,27 +182,26 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             debug_log.append(f"['<' + x.split('<')[-1] for x in all_generations] is: {['<' + x.split('<')[-1] for x in all_generations]}\n\n")
             hints = str(["<" + x.split("<")[-1] for x in all_generations]).replace("'", "")
             if hints_pos=="start":
-                #generation_with_options = hints + " " + all_generations[0].split("<")[0]
-                #debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                 if docs:
                     generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-1])
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]['start'] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    #prompt = templates["choicecompletedocs"].replace("[DOCS]", "\n".join([*dict.fromkeys([completedocs_dict[op]["start"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    exemplar_type = "decodeall" if decode_all else "start"
+                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
                     generation_with_options = hints + " " + all_generations[0].split("<")[0]
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     prompt = templates["choicebefore"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)         
             else:
-                #generation_with_options = all_generations[0].split("<")[0] + hints + " "
-                #debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                 if docs:
                     generation_with_options = " ".join(all_generations[0].split("<")[0].split(" ")[:-1]) + " " + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]['end'] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    #prompt = templates["choicecompletedocs"].replace("[DOCS]", "\n".join([*dict.fromkeys([completedocs_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
                     generation_with_options = all_generations[0].split("<")[0] + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    prompt = templates["choice"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options) 
+                    #prompt = templates["choice"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options) 
 
             debug_log.append(f"Now we pass this prompt to help the model choose from the hints:\n{prompt}\n")
             results = funcmodel.generate([prompt], max_gen_len=32, temperature=temperature, top_p=top_p, stop_token=[13], return_top=return_top)

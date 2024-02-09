@@ -107,6 +107,7 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
         max_gen_len = 512
         func_dict = json.load(open("data/funcqa/func_dict.json"))
         doc_dict = json.load(open("data/funcqa/doc_dict.json"))
+        completedocs_dict = json.load(open("data/funcqa/completedocs_dict.json"))
         exemplar_dict = json.load(open("data/funcqa/exemplar_dict.json"))
 
     elif dataset == "funcqa_oh":
@@ -118,6 +119,7 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
         max_gen_len = 512
         func_dict = json.load(open("data/funcqa/func_dict.json"))
         doc_dict = json.load(open("data/funcqa/doc_dict.json"))
+        completedocs_dict = json.load(open("data/funcqa/completedocs_dict.json"))
         exemplar_dict = json.load(open("data/funcqa/exemplar_dict.json"))
         test_cases = [i["question"] for i in data]
 
@@ -130,6 +132,7 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
         max_gen_len = 512
         func_dict = json.load(open("data/funcqa/func_dict.json"))
         doc_dict = json.load(open("data/funcqa/doc_dict.json"))
+        completedocs_dict = json.load(open("data/funcqa/completedocs_dict.json"))
         exemplar_dict = json.load(open("data/funcqa/exemplar_dict.json"))
         test_cases = [i["question"] for i in data]
 
@@ -202,7 +205,7 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
                 log = func_embedding_inference(templates, case_idx, question, funcmodel, temperature, top_p, max_gen_len, return_top) # for maths tasks we pass the templates (few shot to insert the args)
             elif inference_style == "tool_choice":
                 log = func_embedding_inference_tool_choice(
-                    templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, temperature, top_p, max_gen_len, return_top, hints_pos, decode_all, docs
+                    templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, completedocs_dict, temperature, top_p, max_gen_len, return_top, hints_pos, decode_all, docs
                     )
 
         elif mode == "vh_embedding_inference":
