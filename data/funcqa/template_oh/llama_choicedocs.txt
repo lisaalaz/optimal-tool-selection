@@ -1,6 +1,4 @@
-[INSTRUCTIONS]
-
-Now complete the answers below. In square brackets you will find some hints using the operations explained above. You may use one of these hints if you think it is correct. Note that the order of the hints does not matter, you should reason over each hint based on the above instructions to determine which is correct.
+Complete the answers below. In square brackets you will find some hints. You may use one of these hints if you think it is correct.
 
 [EXEMPLARS]
 

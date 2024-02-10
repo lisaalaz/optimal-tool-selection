@@ -123,7 +123,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     prompt = templates[op].replace("[QUESTION]", question) + " " + cur_generation_with_func # now complete the prompt with exemplars for that operation, adding the question and generation so far (up to the tool)
                     debug_log.append(f"Now we pass this prompt into the model to generate the arguments:\n{prompt}\n")   
                     len_prompt = len(prompt)
-                    results = funcmodel.generate([prompt], max_gen_len=max_gen_len, temperature=0, top_p=top_p, stop_token=[29897, 3892], return_top=return_top) # pass the prompt to add the arguments, here the stop token is ) or )= 
+                    results = funcmodel.generate([prompt], max_gen_len=max_gen_len, temperature=0, top_p=top_p, stop_token=[29897, 3892, 13], return_top=return_top) # pass the prompt to add the arguments, here the stop token is ) or )= 
 
                     if return_top > 0:
                         results, token_log = results
@@ -160,14 +160,20 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                                 
                     try: 
                         res = eval(f"{op[1:-1]}_{args}") # evaluate function with args
-                        func_calls.append(f"{op}{args} = {res}") # append all to func_calls list to output it later
-                        start_length.append(len(cur_generation.split(op)[0]))
-                        cur_generation += str(res) # changed this to keep the operation and arguments in the prompt (for the model to choose)
-                        debug_log.append(f"After evaluating the arguments, we obtain:\n{cur_generation}\n")
-                        end_length.append(len(cur_generation))
+                        debug_log.append(f"The result is:\n{res}\n")
+                        #if len(res) <= 20:
+                        if True:
+                            func_calls.append(f"{op}{args} = {res}") # append all to func_calls list to output it later
+                            start_length.append(len(cur_generation.split(op)[0]))
+                            cur_generation += str(res) # changed this to keep the operation and arguments in the prompt (for the model to choose)
+                            debug_log.append(f"After evaluating the arguments, we obtain:\n{cur_generation}\n")
+                            end_length.append(len(cur_generation))
 
-                        all_generations.append(cur_generation)
-                        operations.append(op)
+                            all_generations.append(cur_generation)
+                            operations.append(op)
+                        else:
+                            debug_log.append(f"Exception! Evaluation result too long, so we won't use it as a hint.\n")
+
 
                     except:
                         # backtrace 
@@ -183,25 +189,37 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             hints = str(["<" + x.split("<")[-1] for x in all_generations]).replace("'", "")
             if hints_pos=="start":
                 if docs:
+                    # do not eliminate plaintext op:
+                    #generation_with_options = hints + " " + all_generations[0].split("<")[0]
+                    # eliminate plaintext op at the end:
                     generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-1])
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     #prompt = templates["choicecompletedocs"].replace("[DOCS]", "\n".join([*dict.fromkeys([completedocs_dict[op]["start"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                     exemplar_type = "decodeall" if decode_all else "start"
-                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    prompt = templates["choicedocs"].replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    #prompt = templates["choicecompletedocs"].replace("[DOCS]", "\n".join([*dict.fromkeys([completedocs_dict[op]["start"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    #prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
                     generation_with_options = hints + " " + all_generations[0].split("<")[0]
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     prompt = templates["choicebefore"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)         
             else:
                 if docs:
+                    # do not eliminate plain text op at the end:
+                    #generation_with_options = all_generations[0].split("<")[0] + hints + " "
+                    # eliminate plain text op at the end:
                     generation_with_options = " ".join(all_generations[0].split("<")[0].split(" ")[:-1]) + " " + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    #prompt = templates["choicecompletedocs"].replace("[DOCS]", "\n".join([*dict.fromkeys([completedocs_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
-                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    
+                    #prompt = templates["choicedocs"].replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    # remove same op docs but keep them in same order:
+                    #prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    # remove same op docs and scramble them:
+                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([doc_dict[op] for op in operations])).replace("[EXEMPLARS]", "\n\n".join(set([exemplar_dict[op]['end'] for op in operations]))).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
                     generation_with_options = all_generations[0].split("<")[0] + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    #prompt = templates["choice"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options) 
+                    prompt = templates["choice"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options) 
 
             debug_log.append(f"Now we pass this prompt to help the model choose from the hints:\n{prompt}\n")
             results = funcmodel.generate([prompt], max_gen_len=32, temperature=temperature, top_p=top_p, stop_token=[13], return_top=return_top)
