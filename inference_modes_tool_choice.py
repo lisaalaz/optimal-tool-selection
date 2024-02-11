@@ -2,11 +2,9 @@ import re
 import random
 import numpy as np
 from funchub.math import *
-
 def func_embedding_inference_tool_choice(templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, completedocs_dict, temperature, top_p, max_gen_len, return_top=5, 
                                          hints_pos="start", decode_all=False, docs=False):
     # Inference mode for funcqa and gsm8k-xl
-
     # immediately set current generation to the empty string
     cur_generation = ""
     # and set current generation with function to the empty string
@@ -14,14 +12,11 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
     start_length = []
     end_length = []
     logs = []
-
     debug_log = []
     debug_log.append(f"{case_idx}\n")
-
     funcmodel.inference_mode = "func_embedding"
     # list the available functions (tools) for the current task
     func_map = list(funcmodel.func_dict.keys())
-
     decode_all_string = "_decodeall" if decode_all else ""
     docs_string = "_docs" if docs else ""
     
@@ -29,33 +24,26 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
     try:
         results = [] 
         func_calls = []
-
         loop_count = 1
         while True: # loop until break
-
             debug_log.append(f"We are at generation loop n.{loop_count}!\n")
-
             # The general few-shot template simply asks to answer the question step by step (does not ask for a specific tool). 
             # We insert the current question into it and append the current generation to it (i.e. after "Answer:")
             # (note that at the beginning the current generation is empty)
             prompt = templates["general"].replace("[QUESTION]", question) + cur_generation
             debug_log.append(f"We pass this general prompt into the model to make it reason:\n{prompt}\n")
-
             # We take the prompt composed above, pass it into the model and assign the generated sequence to the results variable
             # we pass '\n' as stop token here, and set return_top to 5 (so results is actually a tuple of (decoded, generation_log))
             results = funcmodel.generate([prompt], max_gen_len=max_gen_len, temperature=temperature, top_p=top_p, stop_token=[13], return_top=return_top)
-
             # return_top is a flag that can be set. The default is 5.
             if return_top > 0:
                 results, token_log = results # we decouple the results tuple
                 logs.append(token_log)
             debug_log.append(f"And the results of this generation are: {results}\n")
-
             endflag = True
             current_token = 0
             record_tokens = token_log[-1] # this is the last generated token
             # now take the current generation (from the decoded list assigned to results) and eliminate the prompt part that asked to solve step by step, keeping only the generated answer
-
             ####### start added code #######
             cur_generations = []
             if decode_all:
@@ -87,15 +75,12 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                         list_to_decode = token_list + [t]
                         gen = funcmodel.decode_list(list_to_decode)
                         cur_generations.append(gen)
-
             if not cur_generations:
                     cur_generations = [results[0].replace(templates["general"].replace("[QUESTION]", question), "")]
-
             debug_log.append(f"cur_generations is: {cur_generations}\n")                
               
             all_generations = []
             operations = []
-
             debug_log.append(f"Now we append each potential toolken to what we generated before. And look at each of these options to insert the arguments.\n\n")  
             for cur_generation in cur_generations:
               debug_log.append(f"Looking at this option:\n{cur_generation}\n")  
@@ -109,7 +94,6 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     if start_length and end_length:
                         #  debug_log.append(f"we have start length {start_length} and end length {end_length}\n")
                         bias = 0
-
                         # copy the current generation to cur_generation_with_func
                         cur_generation_with_func = cur_generation
                         debug_log.append(f"the cur_generation_with_func is {cur_generation_with_func}\n")
@@ -124,7 +108,6 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     debug_log.append(f"Now we pass this prompt into the model to generate the arguments:\n{prompt}\n")   
                     len_prompt = len(prompt)
                     results = funcmodel.generate([prompt], max_gen_len=max_gen_len, temperature=0, top_p=top_p, stop_token=[29897, 3892, 13], return_top=return_top) # pass the prompt to add the arguments, here the stop token is ) or )= 
-
                     if return_top > 0:
                         results, token_log = results
                         logs.append(token_log)     
@@ -134,7 +117,6 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     # if (not cur_generation.endswith(")=") and not cur_generation.endswith(")")):
                     #     cur_generation += ")"
                     debug_log.append(f"the cur_generation after argument insertion is:\n{cur_generation}\n")
-
                     # now let us just isolate the arguments
                     args = cur_generation.split(op)[-1].replace("=", "").replace(">", "").replace("((", "(").replace("))", ")")
                     # remove any $ in the args
@@ -143,10 +125,8 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     if ", " in args:
                         args = args.replace(", ", ";").replace(",", "").replace(";", ", ") # this leaves ", " unchanged but eliminates commas without spaces
                     args = args.replace(" ", "")
-
                     if "(" not in args or ")" not in args:
                         raise Exception("invalid args")
-
                     # handle %
                     if '%' in args:
                         temp = args.split("(")[1].split(")")[0].split(",")
@@ -166,11 +146,8 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                         cur_generation += str(res) # changed this to keep the operation and arguments in the prompt (for the model to choose)
                         debug_log.append(f"After evaluating the arguments, we obtain:\n{cur_generation}\n")
                         end_length.append(len(cur_generation))
-
                         all_generations.append(cur_generation)
                         operations.append(op)
-
-
                     except:
                         # backtrace 
                         current_token += 1
@@ -180,7 +157,6 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     
             debug_log.append(f"len(all_generations) is {len(all_generations)}\n")
             debug_log.append(f"all_generations is {all_generations}\n")
-
             hints = str([*dict.fromkeys(["<" + x.split("<")[-1] for x in all_generations])]).replace("'", "")
             debug_log.append(f"the hints are: {hints}\n")
             if hints_pos=="start":
@@ -188,18 +164,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                 debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                 if docs:
                     exemplar_type = "decodeall" if decode_all else "start"
-                    exemplar_pos = -1 if decode_all else 0
-                    #if len(operations) <= 4:
-                        #exemplars = []
-                        #for op in operations:
-                        #    exemplars.extend(exemplar_dict[op][exemplar_type].split("\n\n"))
-                        #debug_log.append(f"the exemplars before scrambling are:\n{exemplars}\n")
-                        #random.shuffle(exemplars)
-                        #exemplars = "\n\n".join(exemplars)
-                        #debug_log.append(f"the exemplars after scrambling are:\n{exemplars}\n")
-                        #exemplars = "\n\n".join([exemplar_dict[op][exemplar_type] for op in operations])
-                    #else:
-                    exemplars = "\n\n".join([exemplar_dict[op][exemplar_type].split("\n\n")[0] for op in operations])
+                    exemplars = "\n\n".join([exemplar_dict[op][exemplar_type] for op in operations])
                     debug_log.append(f"the exemplars are:\n{generation_with_options}\n")
                     prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                     #prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
@@ -220,7 +185,6 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     generation_with_options = all_generations[0].split("<")[0] + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     prompt = templates["choice"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options) 
-
             debug_log.append(f"Now we pass this prompt to help the model choose from the hints:\n{prompt}\n")
             results = funcmodel.generate([prompt], max_gen_len=32, temperature=temperature, top_p=top_p, stop_token=[13], return_top=return_top)
                        
@@ -230,13 +194,11 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                 debug_log.append(f"the results before splitting are: {results}\n")
             cur_generation = results[0].split("A: ")[-1].replace(hints + " ", "")
             debug_log.append(f"the cur_generation after choosing and splitting is:\n{cur_generation}\n")
-
             funcmodel.inference_mode = "func_embedding" # return to func embedding mode before next loop
             ######## end added code ########        
             loop_count += 1    
             if endflag: # if a toolken has not been generated at this iteration, we break and conclude the inference of the current example
                 break
-
         log = {
             "case_idx": case_idx,
             "question": question,
@@ -244,7 +206,6 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             "generation": cur_generation.replace("\n", "\\n").strip(),
             "status": "success"
         }
-
     except Exception as e:
         log = {
             "case_idx": case_idx,
@@ -253,12 +214,10 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             "generation": cur_generation.replace("\n", "\\n").strip(),
             "status": str(e)
         }
-
     text_file = open(f"debug_log_tool_choice_{hints_pos}{docs_string}{decode_all_string}.txt", "a+")
     for line in debug_log:
          text_file.write(line)
     text_file.close()
-
     return log
 
 
