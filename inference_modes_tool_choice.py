@@ -1,5 +1,5 @@
 import re
-import math
+import random
 import numpy as np
 from funchub.math import *
 
@@ -161,18 +161,14 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     try: 
                         res = eval(f"{op[1:-1]}_{args}") # evaluate function with args
                         debug_log.append(f"The result is:\n{res}\n")
-                        #if len(res) <= 20:
-                        if True:
-                            func_calls.append(f"{op}{args} = {res}") # append all to func_calls list to output it later
-                            start_length.append(len(cur_generation.split(op)[0]))
-                            cur_generation += str(res) # changed this to keep the operation and arguments in the prompt (for the model to choose)
-                            debug_log.append(f"After evaluating the arguments, we obtain:\n{cur_generation}\n")
-                            end_length.append(len(cur_generation))
+                        func_calls.append(f"{op}{args} = {res}") # append all to func_calls list to output it later
+                        start_length.append(len(cur_generation.split(op)[0]))
+                        cur_generation += str(res) # changed this to keep the operation and arguments in the prompt (for the model to choose)
+                        debug_log.append(f"After evaluating the arguments, we obtain:\n{cur_generation}\n")
+                        end_length.append(len(cur_generation))
 
-                            all_generations.append(cur_generation)
-                            operations.append(op)
-                        else:
-                            debug_log.append(f"Exception! Evaluation result too long, so we won't use it as a hint.\n")
+                        all_generations.append(cur_generation)
+                        operations.append(op)
 
 
                     except:
@@ -185,37 +181,41 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             debug_log.append(f"len(all_generations) is {len(all_generations)}\n")
             debug_log.append(f"all_generations is {all_generations}\n")
 
-            debug_log.append(f"['<' + x.split('<')[-1] for x in all_generations] is: {['<' + x.split('<')[-1] for x in all_generations]}\n\n")
-            hints = str(["<" + x.split("<")[-1] for x in all_generations]).replace("'", "")
+            hints = str([*dict.fromkeys(["<" + x.split("<")[-1] for x in all_generations])]).replace("'", "")
+            debug_log.append(f"the hints are: {hints}\n")
             if hints_pos=="start":
+                generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-1])
+                debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                 if docs:
-                    # do not eliminate plaintext op:
-                    #generation_with_options = hints + " " + all_generations[0].split("<")[0]
-                    # eliminate plaintext op at the end:
-                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-1])
-                    debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    #prompt = templates["choicecompletedocs"].replace("[DOCS]", "\n".join([*dict.fromkeys([completedocs_dict[op]["start"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                     exemplar_type = "decodeall" if decode_all else "start"
-                    prompt = templates["choicedocs"].replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
-                    #prompt = templates["choicecompletedocs"].replace("[DOCS]", "\n".join([*dict.fromkeys([completedocs_dict[op]["start"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    exemplar_pos = -1 if decode_all else 0
+                    if len(operations) <= 4:
+                        #exemplars = []
+                        #for op in operations:
+                        #    exemplars.extend(exemplar_dict[op][exemplar_type].split("\n\n"))
+                        #debug_log.append(f"the exemplars before scrambling are:\n{exemplars}\n")
+                        #random.shuffle(exemplars)
+                        #exemplars = "\n\n".join(exemplars)
+                        #debug_log.append(f"the exemplars after scrambling are:\n{exemplars}\n")
+                        exemplars = "\n\n".join([exemplar_dict[op][exemplar_type] for op in operations])
+                    else:
+                        exemplars = "\n\n".join([exemplar_dict[op][exemplar_type].split("\n\n")[exemplar_pos] for op in operations])
+                    debug_log.append(f"the exemplars are:\n{generation_with_options}\n")
+                    prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                     #prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
-                    generation_with_options = hints + " " + all_generations[0].split("<")[0]
-                    debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     prompt = templates["choicebefore"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)         
             else:
                 if docs:
-                    # do not eliminate plain text op at the end:
-                    #generation_with_options = all_generations[0].split("<")[0] + hints + " "
-                    # eliminate plain text op at the end:
                     generation_with_options = " ".join(all_generations[0].split("<")[0].split(" ")[:-1]) + " " + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    
-                    #prompt = templates["choicedocs"].replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
-                    # remove same op docs but keep them in same order:
-                    #prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
-                    # remove same op docs and scramble them:
-                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([doc_dict[op] for op in operations])).replace("[EXEMPLARS]", "\n\n".join(set([exemplar_dict[op]['end'] for op in operations]))).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    if len(operations) <= 4:
+                        exemplars = "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])
+                    else:
+                        exemplars = "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"].split("\n\n")[-1] for op in operations])])
+                    debug_log.append(f"the exemplars are:\n{generation_with_options}\n")
+                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([doc_dict[op] for op in operations])).replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    #prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
                     generation_with_options = all_generations[0].split("<")[0] + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
