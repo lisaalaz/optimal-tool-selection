@@ -199,7 +199,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                         #debug_log.append(f"the exemplars after scrambling are:\n{exemplars}\n")
                         #exemplars = "\n\n".join([exemplar_dict[op][exemplar_type] for op in operations])
                     #else:
-                    exemplars = "\n\n".join([exemplar_dict[op][exemplar_type].split("\n\n")[exemplar_pos] for op in operations])
+                    exemplars = "\n\n".join([exemplar_dict[op][exemplar_type].split("\n\n")[0] for op in operations])
                     debug_log.append(f"the exemplars are:\n{generation_with_options}\n")
                     prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                     #prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
