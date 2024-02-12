@@ -167,20 +167,15 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     exemplars = "\n\n".join([exemplar_dict[op][exemplar_type] for op in operations])
                     debug_log.append(f"the exemplars are:\n{generation_with_options}\n")
                     prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
-                    #prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([*dict.fromkeys([doc_dict[op] for op in operations])])).replace("[EXEMPLARS]", "\n\n".join([*dict.fromkeys([exemplar_dict[op][exemplar_type] for op in operations])])).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
                     prompt = templates["choicebefore"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)         
             else:
                 if docs:
                     generation_with_options = " ".join(all_generations[0].split("<")[0].split(" ")[:-1]) + " " + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
-                    if len(operations) <= 4:
-                        exemplars = "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"] for op in operations])])
-                    else:
-                        exemplars = "\n\n".join([*dict.fromkeys([exemplar_dict[op]["end"].split("\n\n")[-1] for op in operations])])
+                    exemplars = "\n\n".join([exemplar_dict[op]["end"] for op in operations])
                     debug_log.append(f"the exemplars are:\n{generation_with_options}\n")
-                    prompt = templates["choicedocs"].replace("[INSTRUCTIONS]", "\n".join([doc_dict[op] for op in operations])).replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
-                    #prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
                 else:
                     generation_with_options = all_generations[0].split("<")[0] + hints + " "
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
