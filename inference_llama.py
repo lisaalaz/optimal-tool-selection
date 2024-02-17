@@ -103,12 +103,12 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
                 templates[name.split("_")[-1].replace(".txt", "")] = f.read()
         with open("data/funcqa/funcqa_mh.json") as f:
             data = json.load(f)
-        test_cases = [i["question"] for i in data]
-        max_gen_len = 512
+        max_gen_len = 2048
         func_dict = json.load(open("data/funcqa/func_dict.json"))
         doc_dict = json.load(open("data/funcqa/doc_dict.json"))
         completedocs_dict = json.load(open("data/funcqa/completedocs_dict.json"))
         exemplar_dict = json.load(open("data/funcqa/exemplar_dict.json"))
+        test_cases = [i["question"] for i in data]
 
     elif dataset == "funcqa_oh":
         for name in os.listdir("data/funcqa/template_oh"):
@@ -116,7 +116,7 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
                 templates[name.split("_")[-1].replace(".txt", "")] = f.read()
         with open("data/funcqa/funcqa_oh.json") as f:
             data = json.load(f)
-        max_gen_len = 512
+        max_gen_len = 2048
         func_dict = json.load(open("data/funcqa/func_dict.json"))
         doc_dict = json.load(open("data/funcqa/doc_dict.json"))
         completedocs_dict = json.load(open("data/funcqa/completedocs_dict.json"))
@@ -129,7 +129,7 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
                 templates[name.split("_")[-1].replace(".txt", "")] = f.read()
         with open("data/funcqa/funcqa_val.json") as f:
             data = json.load(f)
-        max_gen_len = 512
+        max_gen_len = 2048
         func_dict = json.load(open("data/funcqa/func_dict.json"))
         doc_dict = json.load(open("data/funcqa/doc_dict.json"))
         completedocs_dict = json.load(open("data/funcqa/completedocs_dict.json"))

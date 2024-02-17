@@ -13,7 +13,7 @@ Q: A man had 789.4 dollars in his wallet. He spent 11.99 dollars on a movie tick
 A: The man had 789.4 dollars in his wallet and spent 11.99 dollars on a movie ticket, so he has 789.4-11.99=[<add>(789.4, 11.99)=801.39', <subtract>(789.4, 11.99)=777.41] 777.41 dollars left. So, the answer is 777.41 dollars.
 
 Q: A school choir practices every 989, 166, and 786 days, respectively. If they start practicing together today, what is the least number of days they have to wait until they can all practice together again?
-A: The least number of days they have to wait until they can all practice together again is the least common multiple of 989, 166 and 786, that is [<add>(989,166,786)=1941, <lcm>(989,166,786)=64520382] 64520382. So, the answer is 64520382.
+A: The least number of days they have to wait until they can all practice together again is [<add>(989,166,786)=1941, <lcm>(989,166,786)=64520382] 64520382. So, the answer is 64520382.
 
 Q: If a cake weighs 3.77 pounds and is divided into 13 equal pieces, how much does each piece weight?
 A: Each piece of the cake weighs 3.77/13=[<divide>(3.77, 13)=0.29] 0.29 pounds. So, the answer is 0.29 pounds.
