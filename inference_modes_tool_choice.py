@@ -40,7 +40,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                 results, token_log = results # we decouple the results tuple
                 logs.append(token_log)
 
-            cur_generation = results[0].replace(templates["general"].replace("[QUESTION]", question), "")            
+            #cur_generation = results[0].replace(templates["general"].replace("[QUESTION]", question), "")            
             
             debug_log.append(f"And the cur_generation after this is: {cur_generation}\n")
             endflag = True
@@ -62,9 +62,9 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                           generation = funcmodel.decode_list(token_list)
                           #debug_log.append(f"generation from token list is: {generation}\n")
 
-                          if loop_count > 1:
-                              generation = cur_generation.split("<")[0] + generation
-                          debug_log.append(f"cur_generation now is: {generation}\n")
+                        #   if loop_count > 1:
+                        #       generation = cur_generation.split("<")[0] + generation
+                        #   debug_log.append(f"cur_generation now is: {generation}\n")
 
 
                           #pos = i
@@ -85,13 +85,13 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                         gen = funcmodel.decode_list(list_to_decode)
                         #debug_log.append(f"gen is: {gen}\n")  
                         
-                        if loop_count > 1:
-                            gen = cur_generation.split("<")[0] + gen
-                        debug_log.append(f"gen with previous part is: {gen}\n")    
+                        # if loop_count > 1:
+                        #     gen = cur_generation.split("<")[0] + gen
+                        # debug_log.append(f"gen with previous part is: {gen}\n")    
                         
                         cur_generations.append(gen)
             if not cur_generations:
-                    cur_generations = [cur_generation]
+                    cur_generations = [results[0].replace(templates["general"].replace("[QUESTION]", question), "")]  #[cur_generation]
             debug_log.append(f"cur_generations is: {cur_generations}\n")                
               
             all_generations = []
@@ -175,11 +175,20 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             hints = str([*dict.fromkeys(["<" + x.split("<")[-1] for x in all_generations])]).replace("'", "")
             debug_log.append(f"the hints are: {hints}\n")
             if hints_pos=="start":
-                if "=" in all_generations[0].split("<")[0]: # only split before last whitespace if there's a plain text = in the generation (so we cut the plaintext op)
-                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split("=")[:-1][0].split(" ")[:-1])
-                else:
-                    generation_with_options = hints + " " + all_generations[0].split("<")[0]
-                #debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
+                
+                # gen_len = len(all_generations[0].split(" "))
+                # min_len = min(3, gen_len)
+                # generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:min_len]) # we only give the model up to three words
+
+                # if "=" in all_generations[0].split("<")[0]: # only split before last whitespace if there's a plain text = in the generation (so we cut the plaintext op)
+                #     generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split("=")[:-1][0].split(" ")[:-1])
+                # else:
+                #     generation_with_options = hints + " " + all_generations[0].split("<")[0]
+
+                generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-1])
+                
+                debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
+                
                 if docs:
                     exemplar_type = "decodeall" if decode_all else "start"
                     exemplars = "\n\n".join([exemplar_dict[op][exemplar_type] for op in operations])
@@ -189,7 +198,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     prompt = templates["choicebefore"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)         
             else:
                 if docs:
-                    generation_with_options = " ".join(all_generations[0].split("<")[0] + " " + hints + " " # if end we do not try to elminate the plaintext operation
+                    generation_with_options = all_generations[0].split("<")[0] + " " + hints + " " # if end we do not try to elminate the plaintext operation
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     exemplars = "\n\n".join([exemplar_dict[op]["end"] for op in operations])
                     #debug_log.append(f"the exemplars are:\n{exemplars}\n")
