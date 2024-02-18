@@ -175,17 +175,11 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             hints = str([*dict.fromkeys(["<" + x.split("<")[-1] for x in all_generations])]).replace("'", "")
             debug_log.append(f"the hints are: {hints}\n")
             if hints_pos=="start":
-                
-                # gen_len = len(all_generations[0].split(" "))
-                # min_len = min(3, gen_len)
-                #generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:min_len]) # we only give the model up to three words
 
                 if "=" in all_generations[0].split("<")[0]: # only split before last whitespace if there's a plain text = in the generation (so we cut the plaintext op)
-                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split("=")[:-1][0].split(" ")[:-1])
+                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split("=")[:-1][0].split(" ")[:-3])
                 else:
-                    generation_with_options = hints + " " + all_generations[0].split("<")[0]
-
-                #generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-1])
+                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-3])
                 
                 debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                 
