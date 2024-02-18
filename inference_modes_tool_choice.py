@@ -175,7 +175,10 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             hints = str([*dict.fromkeys(["<" + x.split("<")[-1] for x in all_generations])]).replace("'", "")
             debug_log.append(f"the hints are: {hints}\n")
             if hints_pos=="start":
-                generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-1])
+                if "=" in all_generations[0].split("<")[0]: # only split before last whitespace if there's a plain text = in the generation (so we cut the plaintext op)
+                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split("=")[:-1][0].split(" ")[:-1])
+                else:
+                    generation_with_options = hints + " " + all_generations[0].split("<")[0]
                 #debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                 if docs:
                     exemplar_type = "decodeall" if decode_all else "start"
@@ -186,7 +189,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     prompt = templates["choicebefore"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)         
             else:
                 if docs:
-                    generation_with_options = " ".join(all_generations[0].split("<")[0].split(" ")[:-1]) + " " + hints + " "
+                    generation_with_options = " ".join(all_generations[0].split("<")[0] + " " + hints + " " # if end we do not try to elminate the plaintext operation
                     debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     exemplars = "\n\n".join([exemplar_dict[op]["end"] for op in operations])
                     #debug_log.append(f"the exemplars are:\n{exemplars}\n")
