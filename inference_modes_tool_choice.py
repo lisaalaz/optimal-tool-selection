@@ -2,7 +2,7 @@ import re
 import random
 import numpy as np
 from funchub.math import *
-def func_embedding_inference_tool_choice(templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, completedocs_dict, temperature, top_p, max_gen_len, return_top=5, 
+def func_embedding_inference_tool_choice(templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, temperature, top_p, max_gen_len, return_top=5, 
                                          hints_pos="start", decode_all=False, docs=False):
     # Inference mode for funcqa and gsm8k-xl
     # immediately set current generation to the empty string
@@ -176,18 +176,24 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             debug_log.append(f"the hints are: {hints}\n")
             if hints_pos=="start":
 
-                if "=" in all_generations[0].split("<")[0]: # only split before last whitespace if there's a plain text = in the generation (so we cut the plaintext op)
+                # always cut off the last 2 words (plus the plaintext operation if present)
+                if "=" in all_generations[0].split("<")[0]: 
                     generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split("=")[:-1][0].split(" ")[:-3])
                 else:
-                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-3])
+                    generation_with_options = hints + " " + " ".join(all_generations[0].split("<")[0].split(" ")[:-3]) # because of the extra whitespace before <op> when no plaintext operation is present
                 
                 debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                 
                 if docs:
+
                     exemplar_type = "decodeall" if decode_all else "start"
                     exemplars = "\n\n".join([exemplar_dict[op][exemplar_type] for op in operations])
                     debug_log.append(f"the exemplars are:\n{generation_with_options}\n")
-                    prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    
+                    instructions = "\n".join([doc_dict[op]["overview"] for op in operations])
+                    prompt = templates["choicecompletedocs"].replace("[INSTRUCTIONS]", instructions).replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+                    #prompt = templates["choicedocs"].replace("[EXEMPLARS]", exemplars).replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
+               
                 else:
                     prompt = templates["choicebefore"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)         
             else:
