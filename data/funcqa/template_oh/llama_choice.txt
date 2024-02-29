@@ -1,22 +1,22 @@
 Complete the answers below. In square brackets you will find some hints. You may use one of these hints if you think it is correct.
 
 Q: If Amy's income increases by 4% annually, how many times will it multiply in 11 years?
-A: In 11 years, Amy's income will increase by [<power>(1.04, 11)=1.54, <multiply>(1.04, 11)=11.44, <log>(1.04)=0.0170333] 1.54 times. So, the answer is 1.54.
+A: In 11 years, Amy's income will [<power>(1.04, 11)=1.54, <multiply>(1.04, 11)=11.44, <log>(1.04)=0.0170333] increase by 1.54 times. So, the answer is 1.54.
 
 Q: If a store sells 147 bananas today and 354 more bananas tomorrow, how many bananas does the store sell in total?
-A: The store sells 147 bananas today and 354 more bananas tomorrow, so the total number of bananas sold is [<multiply>(147, 354)=52038, <add>(147, 354)=501] 501. So, the answer is 501.
+A: The store sells 147 bananas today and 354 more bananas tomorrow, so the total number of bananas [<multiply>(147, 354)=52038, <add>(147, 354)=501] sold is 501. So, the answer is 501.
 
 Q: 10^x=9642, what is the value of x?
-A: 10^x=9642, so x is [<ln>(9642)=9.17, <log>(9642)=3.98, <multiply>(9642,10)=96420] 3.98. So, the answer is 3.98.
+A: 10^x=9642, so [<ln>(9642)=9.17, <log>(9642)=3.98, <multiply>(9642,10)=96420] x is 3.98. So, the answer is 3.98.
 
 Q: A man had 789.4 dollars in his wallet. He spent 11.99 dollars on a movie ticket. How much money does he have left now?
-A: The man had 789.4 dollars in his wallet and spent 11.99 dollars on a movie ticket, so he has [<add>(789.4, 11.99)=801.39', <subtract>(789.4, 11.99)=777.41] 777.41 dollars left. So, the answer is 777.41 dollars.
+A: The man had 789.4 dollars in his wallet and spent 11.99 dollars on a movie ticket, so [<add>(789.4, 11.99)=801.39', <subtract>(789.4, 11.99)=777.41] he has 777.41 dollars left. So, the answer is 777.41 dollars.
 
 Q: A school choir practices every 989, 166, and 786 days, respectively. If they start practicing together today, what is the least number of days they have to wait until they can all practice together again?
-A: The least number of days they have to wait until they can all practice together again is [<add>(989,166,786)=1941, <lcm>(989,166,786)=64520382] 64520382. So, the answer is 64520382.
+A: The least number of days they have to wait until they can all practice together [<add>(989,166,786)=1941, <lcm>(989,166,786)=64520382] again is 64520382. So, the answer is 64520382.
 
 Q: If a cake weighs 3.77 pounds and is divided into 13 equal pieces, how much does each piece weight?
-A: Each piece of the cake weighs [<divide>(3.77, 13)=0.29] 0.29 pounds. So, the answer is 0.29 pounds.
+A: Each piece of the [<divide>(3.77, 13)=0.29] cake weighs 0.29 pounds. So, the answer is 0.29 pounds.
 
 Q: [QUESTION]
 A: [ANSWER]

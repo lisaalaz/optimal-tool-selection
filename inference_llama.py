@@ -41,7 +41,7 @@ def load(ckpt_dir: str, tokenizer_path: str, local_rank: int, world_size: int, f
     with open(Path(ckpt_dir) / "params.json", "r") as f:
         params = json.loads(f.read())
 
-    model_args: ModelArgs = ModelArgs(max_seq_len=3584, max_batch_size=1, **params)
+    model_args: ModelArgs = ModelArgs(max_seq_len=2048, max_batch_size=1, **params)
     tokenizer = Tokenizer(model_path=tokenizer_path)
     model_args.vocab_size = tokenizer.n_words
     torch.set_default_tensor_type(torch.cuda.HalfTensor)
@@ -83,9 +83,10 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
             for i in range(len(v)):
                 q = q.replace(f"{{v_{i+1}}}", str(v[i])) # replace placeholder inside test questions with the actual numbers
             test_cases.append(q)
-
         max_gen_len = 512
         func_dict = json.load(open("data/gsm8k-xl/func_dict.json"))
+        doc_dict = json.load(open("data/gsm8k-xl/doc_dict.json"))
+        exemplar_dict = json.load(open("data/gsm8k-xl/exemplar_dict.json"))
 
     elif dataset ==  "gsm8k-xl-val":
         for name in os.listdir("data/gsm8k-xl/template"):
@@ -93,8 +94,10 @@ def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: floa
                 templates[name.split("_")[-1].replace(".txt", "")] = f.read()
         with open(f"data/gsm8k-xl/val.json") as f:
             data = json.load(f)
-        max_gen_len = 512
+        max_gen_len = 2048
         func_dict = json.load(open("data/gsm8k-xl/func_dict.json"))
+        doc_dict = json.load(open("data/gsm8k-xl/doc_dict.json"))
+        exemplar_dict = json.load(open("data/gsm8k-xl/exemplar_dict.json"))
         test_cases = [i["question"] for i in data]
 
     elif dataset == "funcqa_mh":
