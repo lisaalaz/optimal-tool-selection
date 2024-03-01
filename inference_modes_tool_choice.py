@@ -14,7 +14,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
     logs = []
     debug_log = []
     debug_log.append(f"{case_idx}\n")
-    funcmodel.inference_mode = "func_embedding"
+    #funcmodel.inference_mode = "func_embedding"
     # list the available functions (tools) for the current task
     func_map = list(funcmodel.func_dict.keys())
     decode_all_string = "_decodeall" if decode_all else ""
@@ -27,6 +27,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
         func_calls = []
         loop_count = 1
         while True: # loop until break
+            funcmodel.inference_mode = "func_embedding"
             debug_log.append(f"We are at generation loop n.{loop_count}!\n")
             # The general few-shot template simply asks to answer the question step by step (does not ask for a specific tool). 
             # We insert the current question into it and append the current generation to it (i.e. after "Answer:")
@@ -196,7 +197,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                 debug_log.append(f"len(all_generations) is {len(all_generations)}\n")
                 if len(all_generations) == 0:
                    cur_generation = " ".join(all_generations[-1].split("<")[0].split(" ")[:-3])
-                   funcmodel.inference_mode = "func_embedding" # return to func embedding mode before next loop
+                   #funcmodel.inference_mode = "func_embedding" # return to func embedding mode before next loop
               
                 else:  
                    #debug_log.append(f"all_generations is {all_generations}\n")
@@ -205,9 +206,9 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             
                    # always cut off the last 2 words (plus the plaintext operation if present)
                    if "=" in all_generations[0].split("<")[0]:
-                      gen_without_hints = " ".join(" ".join(all_generations[-1].split("<")[0].split("=")[:-1]).split(" ")[:-3]) #[:-3]
+                      gen_without_hints = " ".join(" ".join(all_generations[-1].split("<")[0].split("=")[:-1]).split(" ")[:-2]) #[:-3]
                    else:
-                      gen_without_hints = " ".join(all_generations[-1].split("<")[0].split(" ")[:-3]) #[:-3] # because of the extra whitespace before <op> when no plaintext operation is present 
+                      gen_without_hints = " ".join(all_generations[-1].split("<")[0].split(" ")[:-2]) #[:-3] # because of the extra whitespace before <op> when no plaintext operation is present 
             
                 if hints_pos=="start":
                 
@@ -252,7 +253,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                   #debug_log.append(f"the results before splitting are: {results}\n")
                 cur_generation = results[0].split("A: ")[-1].replace(hints + " ", "") #.replace("[", "").replace("<", "")
                 debug_log.append(f"the cur_generation after choosing and splitting is:\n{cur_generation}\n")
-                funcmodel.inference_mode = "func_embedding" # return to func embedding mode before next loop
+                #funcmodel.inference_mode = "func_embedding" # return to func embedding mode before next loop
                 ######## end added code ########     
 
             else:
