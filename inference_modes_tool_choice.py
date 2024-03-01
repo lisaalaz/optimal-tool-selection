@@ -196,7 +196,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     
                 debug_log.append(f"len(all_generations) is {len(all_generations)}\n")
                 if len(all_generations) == 0:
-                   cur_generation = " ".join(all_generations[-1].split("<")[0].split(" ")[:-3])
+                   cur_generation = " ".join(all_generations[-1].split("<")[0].split(" ")[:]) #[:-3]
                    #funcmodel.inference_mode = "func_embedding" # return to func embedding mode before next loop
               
                 else:  
@@ -206,9 +206,9 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             
                    # always cut off the last 2 words (plus the plaintext operation if present)
                    if "=" in all_generations[0].split("<")[0]:
-                      gen_without_hints = " ".join(" ".join(all_generations[-1].split("<")[0].split("=")[:-1]).split(" ")[:-2]) #[:-3]
+                      gen_without_hints = " ".join(" ".join(all_generations[-1].split("<")[0].split("=")[:-1]).split(" ")[:]) #[:-3]
                    else:
-                      gen_without_hints = " ".join(all_generations[-1].split("<")[0].split(" ")[:-2]) #[:-3] # because of the extra whitespace before <op> when no plaintext operation is present 
+                      gen_without_hints = " ".join(all_generations[-1].split("<")[0].split(" ")[:]) #[:-3] # because of the extra whitespace before <op> when no plaintext operation is present 
             
                 if hints_pos=="start":
                 
