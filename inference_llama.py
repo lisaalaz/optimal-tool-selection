@@ -54,7 +54,7 @@ def load(ckpt_dir: str, tokenizer_path: str, local_rank: int, world_size: int, f
 
 
 def main(ckpt_dir: str, tokenizer_path: str, temperature: float = 0, top_p: float = 0.95, mode: str = "baseline", dataset = "original",
-         return_top: int = 5, logits_bias: float = 0, func_load_path: str = "None", st_idx=0, ed_idx=10000, suffix="",
+         return_top: int = 7, logits_bias: float = 0, func_load_path: str = "None", st_idx=0, ed_idx=10000, suffix="",
          inference_style: str = "vanilla", hints_pos: str = "start", decode_all: bool = False, docs: bool = False):
     # set random seed
     torch.manual_seed(1)

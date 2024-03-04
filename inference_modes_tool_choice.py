@@ -2,7 +2,7 @@ import re
 import random
 import numpy as np
 from funchub.math import *
-def func_embedding_inference_tool_choice(templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, temperature, top_p, max_gen_len, return_top=5, 
+def func_embedding_inference_tool_choice(templates, case_idx, question, funcmodel, doc_dict, exemplar_dict, temperature, top_p, max_gen_len, return_top=10, 
                                          hints_pos="start", decode_all=False, docs=False):
     # Inference mode for funcqa and gsm8k-xl
     # immediately set current generation to the empty string
@@ -205,11 +205,14 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                    #debug_log.append(f"the hints are: {hints}\n")
             
                    # always cut off the last 2 words (plus the plaintext operation if present)
-                   if "=" in all_generations[0].split("<")[0]:
+                   
+                   if " =" in all_generations[0].split("<")[0]:
+                      gen_without_hints = " ".join(" ".join(all_generations[-1].split("<")[0].split("=")[:-1]).split(" ")[:-1]) #[:-3]
+                   elif "=" in all_generations[0].split("<")[0]:
                       gen_without_hints = " ".join(" ".join(all_generations[-1].split("<")[0].split("=")[:-1]).split(" ")[:]) #[:-3]
                    else:
-                      gen_without_hints = " ".join(all_generations[-1].split("<")[0].split(" ")[:]) #[:-3] # because of the extra whitespace before <op> when no plaintext operation is present 
-            
+                      gen_without_hints = " ".join(all_generations[-1].split("<")[0].split(" ")[:-1]) #[:-3] # because of the extra whitespace before <op> when no plaintext operation is present 
+
                 if hints_pos=="start":
                 
                   generation_with_options = hints + " " + gen_without_hints
@@ -243,9 +246,9 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
                     #generation_with_options = all_generations[0].split("<")[0] + hints + " "
                     #debug_log.append(f"the generation_with_options is:\n{generation_with_options}\n")
                     prompt = templates["choice"].replace("[QUESTION]", question).replace("[ANSWER]", generation_with_options)
-                #debug_log.append(f"Now we pass a prompt to help the model choose from the hints.\n")
-                #debug_log.append(f"{prompt}\n")
-                results = funcmodel.generate([prompt], max_gen_len=32, temperature=temperature, top_p=top_p, stop_token=[13], return_top=return_top) # stop at \n and semicolon. if stop at fullstop 869, 1822, 13742, 29889
+                debug_log.append(f"Now we pass a prompt to help the model choose from the hints.\n")
+                debug_log.append(f"{prompt}\n")
+                results = funcmodel.generate([prompt], max_gen_len=32, temperature=temperature, top_p=top_p, stop_token=[13], return_top=return_top) # stop at \n
                        
                 if return_top > 0:
                   results, token_log = results # we decouple the results tuple
@@ -259,6 +262,7 @@ def func_embedding_inference_tool_choice(templates, case_idx, question, funcmode
             else:
                 if "####" in new_generation:
                   endflag=True
+                  cur_generation += new_generation
                 else:
                    debug_log.append(f"we are in else mode\n")
                    debug_log.append(f"the cur_generation is {cur_generation}\n")
